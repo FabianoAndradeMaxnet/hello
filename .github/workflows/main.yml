@@ -1,26 +1,20 @@
-name: CI para Node.js
+name: Implantar no Heroku
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
-  construir:
-
+  implantar:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Usar Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+
+    - name: Implantar no Heroku
+      uses: akhileshns/heroku-deploy@v3.12.12
       with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "nome-do-seu-app"
+        heroku_email: "seu-email@example.com"
